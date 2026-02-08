@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Remover - Remove Background from Images</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎨 Background Remover</h1>
+            <p>Remove backgrounds from images instantly with AI</p>
+        </header>
+
+        <main class="main-content">
+            <div class="upload-section">
+                <div class="upload-box" id="uploadBox">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2v20m10-10H2" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h2>Upload Image</h2>
+                    <p>Drag and drop your image here or click to select</p>
+                    <input type="file" id="imageInput" accept="image/*" hidden>
+                </div>
+            </div>
+
+            <div class="preview-section" id="previewSection" style="display: none;">
+                <div class="preview-container">
+                    <div class="preview-item">
+                        <h3>Original Image</h3>
+                        <img id="originalImage" src="" alt="Original">
+                    </div>
+                    <div class="preview-item">
+                        <h3>Processed Image</h3>
+                        <canvas id="outputCanvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="downloadBtn" class="btn btn-primary">📥 Download</button>
+                    <button id="resetBtn" class="btn btn-secondary">🔄 Reset</button>
+                </div>
+
+                <div class="processing-info" id="processingInfo" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Processing your image...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Background Remover. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-segmentation"></script>
+    <script src="script.js"></script>
+</body>
+</html>
