@@ -1,62 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Remover - Remove Background from Images</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Background Remover</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix"></script>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f0f0; }
+        canvas { border: 1px solid black; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>🎨 Background Remover</h1>
-            <p>Remove backgrounds from images instantly with AI</p>
-        </header>
+    <input type="file" id="upload" accept="image/*" />
+    <canvas id="canvas"></canvas>
+    <script>
+        const upload = document.getElementById('upload');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let net;
 
-        <main class="main-content">
-            <div class="upload-section">
-                <div class="upload-box" id="uploadBox">
-                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M12 2v20m10-10H2" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <h2>Upload Image</h2>
-                    <p>Drag and drop your image here or click to select</p>
-                    <input type="file" id="imageInput" accept="image/*" hidden>
-                </div>
-            </div>
+        async function loadModel() {
+            net = await bodyPix.load();
+        }
 
-            <div class="preview-section" id="previewSection" style="display: none;">
-                <div class="preview-container">
-                    <div class="preview-item">
-                        <h3>Original Image</h3>
-                        <img id="originalImage" src="" alt="Original">
-                    </div>
-                    <div class="preview-item">
-                        <h3>Processed Image</h3>
-                        <canvas id="outputCanvas"></canvas>
-                    </div>
-                </div>
+        async function removeBackground(image) {
+            const segmentation = await net.segmentPerson(image);
+            const mask = bodyPix.toMask(segmentation);
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            ctx.putImageData(mask, 0, 0);
+        }
 
-                <div class="controls">
-                    <button id="downloadBtn" class="btn btn-primary">📥 Download</button>
-                    <button id="resetBtn" class="btn btn-secondary">🔄 Reset</button>
-                </div>
+        upload.addEventListener('change', async () => {
+            const file = upload.files[0];
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
 
-                <div class="processing-info" id="processingInfo" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>Processing your image...</p>
-                </div>
-            </div>
-        </main>
+            img.onload = async () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                await removeBackground(img);
+            };
+        });
 
-        <footer class="footer">
-            <p>&copy; 2026 Background Remover. All rights reserved.</p>
-        </footer>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-segmentation"></script>
-    <script src="script.js"></script>
+        loadModel();
+    </script>
 </body>
 </html>
