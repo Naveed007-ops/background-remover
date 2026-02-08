@@ -1,0 +1,23 @@
+{
+  "name": "background-remover",
+  "version": "1.0.0",
+  "description": "AI-powered background remover website using TensorFlow.js",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "background-remover",
+    "image-processing",
+    "ai",
+    "tensorflow",
+    "machine-learning",
+    "web-app"
+  ],
+  "author": "Naveed007-ops",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Naveed007-ops/background-remover.git"
+  }
+}
